@@ -1,7 +1,7 @@
 # Read Me First
 The following was discovered as part of building this project:
 
-* The original package name 'lab.idioglossia.row-client-starter' is invalid and this project uses 'lab.idioglossia.rowclientstarter' instead.
+* The original package name 'lab.idioglossia.row-client-starter' is invalid and this project uses 'lab.idioglossia.row' instead.
 
 # Getting Started
 

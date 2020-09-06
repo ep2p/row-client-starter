@@ -1,4 +1,4 @@
-package lab.idioglossia.rowclientstarter;
+package lab.idioglossia.row;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

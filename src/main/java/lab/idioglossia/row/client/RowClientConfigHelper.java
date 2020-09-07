@@ -14,7 +14,6 @@ public class RowClientConfigHelper {
                 .handshakeHeadersProvider(rowClientConfig.getHandshakeHeadersProvider())
                 .rowTransportListener(rowClientConfig.getRowTransportListener())
                 .messageIdGenerator(rowClientConfig.getMessageIdGenerator())
-                .sslContext(rowClientConfig.getSslContext())
                 .subscriptionListenerRegistry(rowClientConfig.getSubscriptionListenerRegistry())
                 .websocketConfig(rowClientConfig.getWebsocketConfig())
                 .build();

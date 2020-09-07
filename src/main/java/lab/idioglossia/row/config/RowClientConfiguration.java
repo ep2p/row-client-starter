@@ -188,7 +188,9 @@ public class RowClientConfiguration {
     @Bean("rowClient")
     @DependsOn({"rowClientFactory"})
     public RowClient rowClient(RowClientFactory rowClientFactory){
-        return rowClientFactory.getRowClient(rowClientProperties.getAddress());
+        RowClient rowClient = rowClientFactory.getRowClient(rowClientProperties.getAddress());
+        rowClient.open();
+        return rowClient;
     }
 
 }

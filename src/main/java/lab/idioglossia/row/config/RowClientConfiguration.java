@@ -13,6 +13,7 @@ import lab.idioglossia.row.client.tyrus.UUIDMessageIdGenerator;
 import lab.idioglossia.row.client.ws.HandshakeHeadersProvider;
 import lab.idioglossia.row.client.ws.RowWebsocketSession;
 import lab.idioglossia.row.client.ws.WebsocketConfig;
+import lab.idioglossia.row.config.properties.RowClientProperties;
 import lab.idioglossia.row.config.properties.WebSocketProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.glassfish.grizzly.ssl.SSLEngineConfigurator;
@@ -29,14 +30,16 @@ import org.springframework.retry.support.RetryTemplate;
 import java.util.concurrent.ExecutorService;
 
 @Configuration
-@EnableConfigurationProperties({WebSocketProperties.class})
+@EnableConfigurationProperties({WebSocketProperties.class, RowClientProperties.class})
 @ConditionalOnProperty(value = "row.client.enable", havingValue = "true")
 @Slf4j
 public class RowClientConfiguration {
     private final WebSocketProperties webSocketProperties;
+    private final RowClientProperties rowClientProperties;
 
-    public RowClientConfiguration(WebSocketProperties webSocketProperties) {
+    public RowClientConfiguration(WebSocketProperties webSocketProperties, RowClientProperties rowClientProperties) {
         this.webSocketProperties = webSocketProperties;
+        this.rowClientProperties = rowClientProperties;
     }
 
     @Bean("rowRetryTemplate")
@@ -180,6 +183,12 @@ public class RowClientConfiguration {
         return new RowClientFactory(rowClientConfig, rowHttpClientHolder.getRowHttpClient());
     }
 
-
+    @ConditionalOnProperty(prefix = "row.client", name = "address", matchIfMissing = true)
+    @ConditionalOnMissingBean(RowClient.class)
+    @Bean("rowClient")
+    @DependsOn({"rowClientFactory"})
+    public RowClient rowClient(RowClientFactory rowClientFactory){
+        return rowClientFactory.getRowClient(rowClientProperties.getAddress());
+    }
 
 }

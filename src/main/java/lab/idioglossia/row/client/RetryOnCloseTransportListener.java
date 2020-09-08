@@ -19,6 +19,11 @@ public class RetryOnCloseTransportListener implements RowTransportListener {
     }
 
     @Override
+    public void onOpen(RowWebsocketSession rowWebsocketSession) {
+        log.info("Stablished connection to "+ rowWebsocketSession.getUri());
+    }
+
+    @Override
     public void onError(RowWebsocketSession rowWebsocketSession, Throwable throwable) {
         log.error("Transport error", throwable);
     }

@@ -9,4 +9,5 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Setter
 public class RowClientProperties {
     private String address;
+    private boolean enable;
 }

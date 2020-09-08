@@ -108,12 +108,7 @@ public class RowClientConfiguration {
     @Bean
     @ConditionalOnMissingBean(GeneralCallback.class)
     public GeneralCallback<?> generalCallback(){
-        return new GeneralCallback<Object>() {
-            @Override
-            public <E> void onMessage(E e) {
-                log.warn("Implement general callback to get messages published from server into no specific channel");
-            }
-        };
+        return new DefaultGeneralCallback<>();
     }
 
     @Bean("rowClientExecutorServiceHolder")

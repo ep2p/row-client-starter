@@ -1,5 +1,6 @@
 package lab.idioglossia.row.client;
 
+import lab.idioglossia.row.client.tyrus.ConnectionRepository;
 import lab.idioglossia.row.client.tyrus.RowClientConfig;
 
 public class RowClientConfigHelper {
@@ -8,9 +9,9 @@ public class RowClientConfigHelper {
                 .address(rowClientConfig.getAddress())
                 .callbackRegistry(rowClientConfig.getCallbackRegistry())
                 .attributes(rowClientConfig.getAttributes())
-                .connectionRepository(rowClientConfig.getConnectionRepository())
+                .connectionRepository(new ConnectionRepository.DefaultConnectionRepository<>())
                 .executorService(rowClientConfig.getExecutorService())
-                .generalCallback(rowClientConfig.getGeneralCallback())
+                .generalCallback(new DefaultGeneralCallback<>())
                 .handshakeHeadersProvider(rowClientConfig.getHandshakeHeadersProvider())
                 .rowTransportListener(rowClientConfig.getRowTransportListener())
                 .messageIdGenerator(rowClientConfig.getMessageIdGenerator())

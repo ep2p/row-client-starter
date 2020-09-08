@@ -2,7 +2,6 @@ package lab.idioglossia.row.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lab.idioglossia.row.client.callback.HttpExtendedResponseCallback;
-import lab.idioglossia.row.client.callback.ResponseCallback;
 import lab.idioglossia.row.client.model.RowRequest;
 import lab.idioglossia.row.client.model.RowResponse;
 import lab.idioglossia.row.client.model.protocol.RowResponseStatus;
@@ -30,20 +29,19 @@ public class RestTemplateRowHttpClient implements RowHttpClient {
 
     @SneakyThrows
     @Override
-    public void sendRequest(RowRequest<?, ?> rowRequest, ResponseCallback<?> responseCallback) {
-        HttpExtendedResponseCallback httpExtendedResponseCallback = (HttpExtendedResponseCallback) responseCallback;
+    public void sendRequest(RowRequest<?, ?> rowRequest, HttpExtendedResponseCallback<?> responseCallback) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        if(rowRequest != null)
+        if(rowRequest.getHeaders() != null)
             rowRequest.getHeaders().forEach(headers::set);
 
         HttpEntity<String> entity = new HttpEntity<String>(objectMapper.writeValueAsString(rowRequest.getBody()), headers);
         URI uri = getUri(rowRequest);
         try {
-            ResponseEntity responseEntity = restTemplate.exchange(uri, getHttpMethod(rowRequest.getMethod()), entity, httpExtendedResponseCallback.getResponseBodyClass());
-            httpExtendedResponseCallback.onResponse(getRowResponse(responseEntity));
+            ResponseEntity responseEntity = restTemplate.exchange(uri, getHttpMethod(rowRequest.getMethod()), entity, responseCallback.getResponseBodyClass());
+            responseCallback.onResponse(getRowResponse(responseEntity));
         }catch (Exception e){
-            httpExtendedResponseCallback.onError(e);
+            responseCallback.onError(e);
         }
     }
 

@@ -1,8 +1,8 @@
 package lab.idioglossia.row.client;
 
-import jdk.internal.jline.internal.Nullable;
 import lab.idioglossia.row.client.tyrus.RowClientConfig;
 import lab.idioglossia.row.client.tyrus.TyrusRowWebsocketClient;
+import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
 public class RowClientFactory {

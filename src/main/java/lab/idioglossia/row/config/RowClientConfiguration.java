@@ -26,8 +26,10 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.retry.backoff.FixedBackOffPolicy;
 import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ThreadPoolExecutor;
 
 @Configuration
 @EnableConfigurationProperties({WebSocketProperties.class, RowClientProperties.class})
@@ -60,7 +62,13 @@ public class RowClientConfiguration {
     @Bean("rowTransportListener")
     @ConditionalOnMissingBean(RowTransportListener.class)
     public RowTransportListener rowTransportListener(RetryTemplate rowRetryTemplate){
-        return new RetryOnCloseTransportListener(rowRetryTemplate);
+        ThreadPoolTaskScheduler threadPoolTaskScheduler = new ThreadPoolTaskScheduler();
+        threadPoolTaskScheduler.setPoolSize(5);
+        threadPoolTaskScheduler.setRemoveOnCancelPolicy(true);
+        threadPoolTaskScheduler.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
+        threadPoolTaskScheduler.setWaitForTasksToCompleteOnShutdown(false);
+        threadPoolTaskScheduler.initialize();
+        return new HeartbeatTransportListenerDecorator(new RetryOnCloseTransportListener(rowRetryTemplate), threadPoolTaskScheduler, 5);
     }
 
     @Bean("sslEngineConfiguratorHolder")

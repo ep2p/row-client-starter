@@ -1,7 +1,7 @@
 package lab.idioglossia.row.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lab.idioglossia.row.client.callback.HttpExtendedResponseCallback;
+import lab.idioglossia.row.client.callback.ResponseCallback;
 import lab.idioglossia.row.client.model.RowRequest;
 import lab.idioglossia.row.client.model.RowResponse;
 import lab.idioglossia.row.client.model.protocol.RowResponseStatus;
@@ -29,7 +29,7 @@ public class RestTemplateRowHttpClient implements RowHttpClient {
 
     @SneakyThrows
     @Override
-    public void sendRequest(RowRequest<?, ?> rowRequest, HttpExtendedResponseCallback<?> responseCallback) {
+    public void sendRequest(RowRequest<?, ?> rowRequest, ResponseCallback<?> responseCallback) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         if(rowRequest.getHeaders() != null)

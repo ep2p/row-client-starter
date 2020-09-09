@@ -186,14 +186,13 @@ public class RowClientConfiguration {
         return new RowClientFactory(rowClientConfig, rowHttpClientHolder.getRowHttpClient());
     }
 
+    //post construct is called (open()) cause this bean is created by spring
     @ConditionalOnProperty(prefix = "row.client", name = "address", matchIfMissing = true)
     @ConditionalOnMissingBean(RowClient.class)
     @Bean("rowClient")
     @DependsOn({"rowClientFactory"})
     public RowClient rowClient(RowClientFactory rowClientFactory){
-        RowClient rowClient = rowClientFactory.getRowClient(rowClientProperties.getAddress());
-        rowClient.open();
-        return rowClient;
+        return rowClientFactory.getRowClient(rowClientProperties.getAddress());
     }
 
 }

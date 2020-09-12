@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>lab.idioglossia</groupId>
 	<artifactId>row-client-starter</artifactId>
-	<version>0.0.4-SNAPSHOT</version>
+	<version>0.1.0-SNAPSHOT</version>
 	<name>Row Client Starter</name>
 	<description> Row client starter for springboot</description>
 
@@ -38,7 +38,7 @@
 		<dependency>
 			<groupId>com.github.idioglossia</groupId>
 			<artifactId>java-row-client</artifactId>
-			<version>0.3.0-SNAPSHOT</version>
+			<version>0.4.0-SNAPSHOT</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.springframework.retry/spring-retry -->

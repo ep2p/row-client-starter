@@ -55,7 +55,6 @@ public class HeartbeatTransportListenerDecorator extends TransportListenerDecora
                 public void run() {
                     try {
                         if(rowWebsocketSession.isOpen()){
-                            log.info("Sending ping message");
                             rowWebsocketSession.sendPingMessage(null);
                         }
                     } catch (IOException e) {

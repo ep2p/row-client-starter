@@ -3,9 +3,7 @@ package lab.idioglossia.row.client;
 import lab.idioglossia.row.client.callback.RowTransportListener;
 import lab.idioglossia.row.client.ws.RowWebsocketSession;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.Trigger;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.scheduling.support.PeriodicTrigger;
 
@@ -40,7 +38,7 @@ public class HeartbeatTransportListenerDecorator extends TransportListenerDecora
 
     @Slf4j
     private static class HeartbeatRunner {
-        private final TaskScheduler taskScheduler;
+        private final ThreadPoolTaskScheduler taskScheduler;
         private final int seconds;
 
         private HeartbeatRunner(ThreadPoolTaskScheduler taskScheduler, int seconds) {
@@ -65,7 +63,7 @@ public class HeartbeatTransportListenerDecorator extends TransportListenerDecora
         }
 
         public void stop(){
-            ((ThreadPoolTaskExecutor) taskScheduler).shutdown();
+            taskScheduler.shutdown();
         }
     }
 }

@@ -1,5 +1,8 @@
 package lab.idioglossia.row.config;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import lab.idioglossia.row.client.*;
 import lab.idioglossia.row.client.callback.GeneralCallback;
 import lab.idioglossia.row.client.callback.RowTransportListener;
@@ -10,6 +13,8 @@ import lab.idioglossia.row.client.registry.SubscriptionListenerRegistry;
 import lab.idioglossia.row.client.tyrus.ConnectionRepository;
 import lab.idioglossia.row.client.tyrus.RowClientConfig;
 import lab.idioglossia.row.client.tyrus.UUIDMessageIdGenerator;
+import lab.idioglossia.row.client.util.DefaultJacksonMessageConverter;
+import lab.idioglossia.row.client.util.MessageConverter;
 import lab.idioglossia.row.client.ws.HandshakeHeadersProvider;
 import lab.idioglossia.row.client.ws.RowWebsocketSession;
 import lab.idioglossia.row.client.ws.WebsocketConfig;
@@ -42,6 +47,22 @@ public class RowClientConfiguration {
     public RowClientConfiguration(WebSocketProperties webSocketProperties, RowClientProperties rowClientProperties) {
         this.webSocketProperties = webSocketProperties;
         this.rowClientProperties = rowClientProperties;
+    }
+
+    @Bean("objectMapper")
+    @ConditionalOnMissingBean(ObjectMapper.class)
+    public ObjectMapper objectMapper(){
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        return objectMapper;
+    }
+
+    @Bean("messageConverter")
+    @ConditionalOnMissingBean(MessageConverter.class)
+    @DependsOn("objectMapper")
+    public MessageConverter messageConverter(ObjectMapper objectMapper){
+        return new DefaultJacksonMessageConverter(objectMapper);
     }
 
     @Bean("rowRetryTemplate")
@@ -144,7 +165,7 @@ public class RowClientConfiguration {
 
     @Bean({"rowClientConfig", "defaultRowClientConfig"})
     @ConditionalOnMissingBean(RowClientConfig.class)
-    @DependsOn({"websocketConfig", "subscriptionListenerRegistry", "messageIdGenerator", "rowTransportListener", "handshakeHeadersProvider", "generalCallback", "rowClientExecutorServiceHolder", "rowConnectionRepository", "rowCallbackRegistry"})
+    @DependsOn({"websocketConfig", "subscriptionListenerRegistry", "messageIdGenerator", "rowTransportListener", "handshakeHeadersProvider", "generalCallback", "rowClientExecutorServiceHolder", "rowConnectionRepository", "rowCallbackRegistry", "messageConverter"})
     public RowClientConfig rowClientConfig(
             WebsocketConfig websocketConfig,
             SubscriptionListenerRegistry subscriptionListenerRegistry,
@@ -154,7 +175,8 @@ public class RowClientConfiguration {
             GeneralCallback<?> generalCallback,
             RowClientExecutorServiceHolder rowClientExecutorServiceHolder,
             ConnectionRepository<RowWebsocketSession> rowConnectionRepository,
-            CallbackRegistry rowCallbackRegistry
+            CallbackRegistry rowCallbackRegistry,
+            MessageConverter messageConverter
     ){
         return RowClientConfig.builder()
                 .websocketConfig(websocketConfig)
@@ -166,6 +188,7 @@ public class RowClientConfiguration {
                 .executorService(rowClientExecutorServiceHolder.getExecutorService())
                 .connectionRepository(rowConnectionRepository)
                 .callbackRegistry(rowCallbackRegistry)
+                .messageConverter(messageConverter)
                 .build();
     }
 

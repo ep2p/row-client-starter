@@ -210,7 +210,7 @@ public class RowClientConfiguration {
     }
 
     //post construct is called (open()) cause this bean is created by spring
-    @ConditionalOnProperty(prefix = "row.client", name = "address", matchIfMissing = true)
+    @ConditionalOnProperty(prefix = "row.client", name = "address")
     @ConditionalOnMissingBean(RowClient.class)
     @Bean("rowClient")
     @DependsOn({"rowClientFactory"})

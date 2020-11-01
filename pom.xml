@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>lab.idioglossia</groupId>
 	<artifactId>row-client-starter</artifactId>
-	<version>1.0.0-RELEASE</version>
+	<version>1.0.1-RELEASE</version>
 	<name>Row Client Starter</name>
 	<description> Row client starter for springboot</description>
 

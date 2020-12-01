@@ -2,10 +2,11 @@ package lab.idioglossia.row.client;
 
 import lab.idioglossia.row.client.tyrus.ConnectionRepository;
 import lab.idioglossia.row.client.tyrus.RowClientConfig;
+import lab.idioglossia.row.client.ws.RowWebsocketSession;
 
 public class RowClientConfigHelper {
-    public static RowClientConfig clone(RowClientConfig rowClientConfig){
-        return RowClientConfig.builder()
+    public static RowClientConfig<RowWebsocketSession> clone(RowClientConfig<RowWebsocketSession> rowClientConfig){
+        return RowClientConfig.<RowWebsocketSession>builder()
                 .address(rowClientConfig.getAddress())
                 .callbackRegistry(rowClientConfig.getCallbackRegistry())
                 .attributes(rowClientConfig.getAttributes())

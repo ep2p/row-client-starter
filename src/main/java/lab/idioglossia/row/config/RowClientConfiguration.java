@@ -18,10 +18,11 @@ import lab.idioglossia.row.client.util.MessageConverter;
 import lab.idioglossia.row.client.ws.HandshakeHeadersProvider;
 import lab.idioglossia.row.client.ws.RowWebsocketSession;
 import lab.idioglossia.row.client.ws.WebsocketConfig;
+import lab.idioglossia.row.client.ws.WebsocketSession;
 import lab.idioglossia.row.config.properties.RowClientProperties;
 import lab.idioglossia.row.config.properties.WebSocketProperties;
 import lombok.extern.slf4j.Slf4j;
-import org.glassfish.grizzly.ssl.SSLEngineConfigurator;
+import org.glassfish.tyrus.client.SslEngineConfigurator;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -70,7 +71,7 @@ public class RowClientConfiguration {
         RetryTemplate retryTemplate = new RetryTemplate();
 
         FixedBackOffPolicy fixedBackOffPolicy = new FixedBackOffPolicy();
-        fixedBackOffPolicy.setBackOffPeriod(5000l);
+        fixedBackOffPolicy.setBackOffPeriod(5000L);
         retryTemplate.setBackOffPolicy(fixedBackOffPolicy);
 
         SimpleRetryPolicy retryPolicy = new SimpleRetryPolicy();
@@ -97,7 +98,7 @@ public class RowClientConfiguration {
     public SSLEngineConfiguratorHolder sslEngineConfiguratorHolder(){
         return new SSLEngineConfiguratorHolder() {
             @Override
-            public SSLEngineConfigurator sslEngineConfigurator() {
+            public SslEngineConfigurator sslEngineConfigurator() {
                 return null;
             }
         };
@@ -153,7 +154,7 @@ public class RowClientConfiguration {
 
     @Bean("rowConnectionRepository")
     @ConditionalOnMissingBean(ConnectionRepository.class)
-    public ConnectionRepository<RowWebsocketSession> rowConnectionRepository(){
+    public ConnectionRepository<WebsocketSession> rowConnectionRepository(){
         return new ConnectionRepository.DefaultConnectionRepository<>();
     }
 
@@ -166,7 +167,7 @@ public class RowClientConfiguration {
     @Bean({"rowClientConfig", "defaultRowClientConfig"})
     @ConditionalOnMissingBean(RowClientConfig.class)
     @DependsOn({"websocketConfig", "subscriptionListenerRegistry", "messageIdGenerator", "rowTransportListener", "handshakeHeadersProvider", "generalCallback", "rowClientExecutorServiceHolder", "rowConnectionRepository", "rowCallbackRegistry", "messageConverter"})
-    public RowClientConfig rowClientConfig(
+    public RowClientConfig<WebsocketSession> rowClientConfig(
             WebsocketConfig websocketConfig,
             SubscriptionListenerRegistry subscriptionListenerRegistry,
             MessageIdGenerator messageIdGenerator,
@@ -174,7 +175,7 @@ public class RowClientConfiguration {
             HandshakeHeadersProvider handshakeHeadersProvider,
             GeneralCallback<?> generalCallback,
             RowClientExecutorServiceHolder rowClientExecutorServiceHolder,
-            ConnectionRepository<RowWebsocketSession> rowConnectionRepository,
+            ConnectionRepository<WebsocketSession> rowConnectionRepository,
             CallbackRegistry rowCallbackRegistry,
             MessageConverter messageConverter
     ){
@@ -205,7 +206,7 @@ public class RowClientConfiguration {
 
     @Bean("rowClientFactory")
     @DependsOn({"rowClientConfig", "rowHttpClientHolder"})
-    public RowClientFactory rowClientFactory(RowClientConfig rowClientConfig, RowHttpClientHolder rowHttpClientHolder){
+    public RowClientFactory rowClientFactory(RowClientConfig<WebsocketSession> rowClientConfig, RowHttpClientHolder rowHttpClientHolder){
         return new RowClientFactory(rowClientConfig, rowHttpClientHolder.getRowHttpClient());
     }
 

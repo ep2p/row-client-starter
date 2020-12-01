@@ -1,7 +1,7 @@
 package lab.idioglossia.row.client;
 
-import org.glassfish.grizzly.ssl.SSLEngineConfigurator;
+import org.glassfish.tyrus.client.SslEngineConfigurator;
 
 public interface SSLEngineConfiguratorHolder {
-    SSLEngineConfigurator sslEngineConfigurator();
+    SslEngineConfigurator sslEngineConfigurator();
 }

@@ -7,7 +7,7 @@ import lab.idioglossia.row.client.model.RowRequest;
 import lab.idioglossia.row.client.tyrus.RequestSender;
 import lab.idioglossia.row.client.tyrus.RowClientConfig;
 import lab.idioglossia.row.client.tyrus.RowMessageHandler;
-import lab.idioglossia.row.client.tyrus.handler.PipelineFactory;
+import lab.idioglossia.row.client.ws.handler.PipelineFactory;
 import lombok.SneakyThrows;
 import org.glassfish.tyrus.client.ClientManager;
 import org.springframework.http.HttpHeaders;

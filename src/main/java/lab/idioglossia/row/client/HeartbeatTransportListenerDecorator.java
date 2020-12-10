@@ -2,6 +2,7 @@ package lab.idioglossia.row.client;
 
 import lab.idioglossia.row.client.callback.RowTransportListener;
 import lab.idioglossia.row.client.ws.RowWebsocketSession;
+import lab.idioglossia.row.client.ws.WebsocketSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.Trigger;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
@@ -11,33 +12,33 @@ import javax.websocket.CloseReason;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-public class HeartbeatTransportListenerDecorator extends TransportListenerDecorator {
+public class HeartbeatTransportListenerDecorator<S extends WebsocketSession> extends TransportListenerDecorator<S> {
     private final HeartbeatRunner heartbeatRunner;
 
-    public HeartbeatTransportListenerDecorator(RowTransportListener rowTransportListener, ThreadPoolTaskScheduler taskScheduler, int sec) {
+    public HeartbeatTransportListenerDecorator(RowTransportListener<S> rowTransportListener, ThreadPoolTaskScheduler taskScheduler, int sec) {
         super(rowTransportListener);
         this.heartbeatRunner = new HeartbeatRunner(taskScheduler, sec);
     }
 
     @Override
-    public void onOpen(RowWebsocketSession rowWebsocketSession) {
+    public void onOpen(S rowWebsocketSession) {
         super.onOpen(rowWebsocketSession);
         this.heartbeatRunner.run(rowWebsocketSession);
     }
 
     @Override
-    public void onError(RowWebsocketSession rowWebsocketSession, Throwable throwable) {
+    public void onError(S rowWebsocketSession, Throwable throwable) {
         super.onError(rowWebsocketSession, throwable);
     }
 
     @Override
-    public void onClose(RowClient rowClient, RowWebsocketSession rowWebsocketSession, CloseReason closeReason) {
+    public void onClose(RowClient rowClient, S rowWebsocketSession, CloseReason closeReason) {
         super.onClose(rowClient, rowWebsocketSession, closeReason);
         this.heartbeatRunner.stop();
     }
 
     @Slf4j
-    private static class HeartbeatRunner {
+    private static class HeartbeatRunner<S extends WebsocketSession> {
         private final ThreadPoolTaskScheduler taskScheduler;
         private final int seconds;
 
@@ -46,7 +47,7 @@ public class HeartbeatTransportListenerDecorator extends TransportListenerDecora
             this.seconds = seconds;
         }
 
-        public void run(RowWebsocketSession rowWebsocketSession){
+        public void run(S rowWebsocketSession){
             Trigger trigger = new PeriodicTrigger(seconds, TimeUnit.SECONDS);
             taskScheduler.schedule(new Runnable() {
                 @Override
@@ -55,8 +56,9 @@ public class HeartbeatTransportListenerDecorator extends TransportListenerDecora
                         if(rowWebsocketSession.isOpen()){
                             rowWebsocketSession.sendPingMessage(null);
                         }
-                    } catch (IOException e) {
+                    } catch (Exception e) {
                         log.error("Failed to send ping packet", e);
+                        stop();
                     }
                 }
             }, trigger);

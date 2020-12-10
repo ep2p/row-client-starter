@@ -10,4 +10,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class RowClientProperties {
     private String address;
     private boolean enable;
+    private Type type = Type.TYRUS;
+
+    public enum Type {
+        TYRUS, SPRING
+    }
 }

@@ -1,4 +1,4 @@
-package lab.idioglossia.row.config;
+package lab.idioglossia.row.client.config;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import lab.idioglossia.row.client.*;
 import lab.idioglossia.row.client.callback.GeneralCallback;
 import lab.idioglossia.row.client.callback.RowTransportListener;
+import lab.idioglossia.row.client.http.RowClientFactory;
+import lab.idioglossia.row.client.http.RowHttpClientHolder;
 import lab.idioglossia.row.client.registry.CallbackRegistry;
 import lab.idioglossia.row.client.registry.MapCallbackRegistry;
 import lab.idioglossia.row.client.registry.MapSubscriptionListenerRegistry;
@@ -16,11 +18,10 @@ import lab.idioglossia.row.client.tyrus.UUIDMessageIdGenerator;
 import lab.idioglossia.row.client.util.DefaultJacksonMessageConverter;
 import lab.idioglossia.row.client.util.MessageConverter;
 import lab.idioglossia.row.client.ws.HandshakeHeadersProvider;
-import lab.idioglossia.row.client.ws.RowWebsocketSession;
 import lab.idioglossia.row.client.ws.WebsocketConfig;
 import lab.idioglossia.row.client.ws.WebsocketSession;
-import lab.idioglossia.row.config.properties.RowClientProperties;
-import lab.idioglossia.row.config.properties.WebSocketProperties;
+import lab.idioglossia.row.client.config.properties.RowClientProperties;
+import lab.idioglossia.row.client.config.properties.WebSocketProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.glassfish.tyrus.client.SslEngineConfigurator;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -167,11 +168,11 @@ public class RowClientConfiguration {
     @Bean({"rowClientConfig", "defaultRowClientConfig"})
     @ConditionalOnMissingBean(RowClientConfig.class)
     @DependsOn({"websocketConfig", "subscriptionListenerRegistry", "messageIdGenerator", "rowTransportListener", "handshakeHeadersProvider", "generalCallback", "rowClientExecutorServiceHolder", "rowConnectionRepository", "rowCallbackRegistry", "messageConverter"})
-    public RowClientConfig<WebsocketSession> rowClientConfig(
+    public RowClientConfig rowClientConfig(
             WebsocketConfig websocketConfig,
             SubscriptionListenerRegistry subscriptionListenerRegistry,
             MessageIdGenerator messageIdGenerator,
-            RowTransportListener rowTransportListener,
+            RowTransportListener<WebsocketSession> rowTransportListener,
             HandshakeHeadersProvider handshakeHeadersProvider,
             GeneralCallback<?> generalCallback,
             RowClientExecutorServiceHolder rowClientExecutorServiceHolder,

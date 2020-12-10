@@ -1,4 +1,4 @@
-package lab.idioglossia.row.config.properties;
+package lab.idioglossia.row.client.config.properties;
 
 import lombok.Getter;
 import lombok.Setter;

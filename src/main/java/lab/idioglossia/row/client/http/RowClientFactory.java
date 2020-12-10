@@ -1,5 +1,9 @@
-package lab.idioglossia.row.client;
+package lab.idioglossia.row.client.http;
 
+import lab.idioglossia.row.client.HttpFallbackRowClientDecorator;
+import lab.idioglossia.row.client.RowClient;
+import lab.idioglossia.row.client.RowClientConfigHelper;
+import lab.idioglossia.row.client.RowHttpClient;
 import lab.idioglossia.row.client.tyrus.RowClientConfig;
 import lab.idioglossia.row.client.tyrus.TyrusRowWebsocketClient;
 import org.springframework.lang.Nullable;

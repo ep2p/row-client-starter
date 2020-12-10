@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import lab.idioglossia.row.client.*;
 import lab.idioglossia.row.client.callback.GeneralCallback;
 import lab.idioglossia.row.client.callback.RowTransportListener;
-import lab.idioglossia.row.client.http.RowClientFactory;
+import lab.idioglossia.row.client.TyrusRowClientFactory;
 import lab.idioglossia.row.client.http.RowHttpClientHolder;
 import lab.idioglossia.row.client.registry.CallbackRegistry;
 import lab.idioglossia.row.client.registry.MapCallbackRegistry;
@@ -208,7 +208,11 @@ public class RowClientConfiguration {
     @Bean("rowClientFactory")
     @DependsOn({"rowClientConfig", "rowHttpClientHolder"})
     public RowClientFactory rowClientFactory(RowClientConfig<WebsocketSession> rowClientConfig, RowHttpClientHolder rowHttpClientHolder){
-        return new RowClientFactory(rowClientConfig, rowHttpClientHolder.getRowHttpClient());
+        if(rowClientProperties.getType().equals(RowClientProperties.Type.TYRUS)){
+            return new TyrusRowClientFactory(rowClientConfig, rowHttpClientHolder.getRowHttpClient());
+        }else {
+            return new SpringRowClientFactory(rowClientConfig, rowHttpClientHolder.getRowHttpClient());
+        }
     }
 
     //post construct is called (open()) cause this bean is created by spring

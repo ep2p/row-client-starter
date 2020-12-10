@@ -1,19 +1,18 @@
-package lab.idioglossia.row.client.http;
+package lab.idioglossia.row.client;
 
-import lab.idioglossia.row.client.HttpFallbackRowClientDecorator;
-import lab.idioglossia.row.client.RowClient;
-import lab.idioglossia.row.client.RowClientConfigHelper;
-import lab.idioglossia.row.client.RowHttpClient;
 import lab.idioglossia.row.client.tyrus.RowClientConfig;
 import lab.idioglossia.row.client.tyrus.TyrusRowWebsocketClient;
+import lab.idioglossia.row.client.ws.RowWebsocketSession;
+import lab.idioglossia.row.client.ws.SpringRowWebsocketClient;
+import lab.idioglossia.row.client.ws.SpringRowWebsocketSession;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
-public class RowClientFactory {
+public class SpringRowClientFactory implements RowClientFactory<SpringRowWebsocketSession> {
     private RowClientConfig rowClientConfig;
     private RowHttpClient rowHttpClient;
 
-    public RowClientFactory(RowClientConfig rowClientConfig, @Nullable RowHttpClient rowHttpClient) {
+    public SpringRowClientFactory(RowClientConfig rowClientConfig, @Nullable RowHttpClient rowHttpClient) {
         this.rowClientConfig = rowClientConfig;
         this.rowHttpClient = rowHttpClient;
     }
@@ -30,12 +29,11 @@ public class RowClientFactory {
 
     public RowClient getRowClient(RowClientConfig rowClientConfig){
         Assert.notNull(rowClientConfig.getAddress(), "Address cant be null");
-        return new TyrusRowWebsocketClient(rowClientConfig);
+        return new SpringRowWebsocketClient(rowClientConfig);
     }
 
     public RowClient getRowClient(RowClientConfig rowClientConfig, RowHttpClient rowHttpClient){
-        Assert.notNull(rowClientConfig.getAddress(), "Address cant be null");
-        return new HttpFallbackRowClientDecorator(new TyrusRowWebsocketClient(rowClientConfig), rowHttpClient);
+        return new HttpFallbackRowClientDecorator(getRowClient(rowClientConfig), rowHttpClient);
     }
 
     public RowClientConfig getRowClientConfig(){

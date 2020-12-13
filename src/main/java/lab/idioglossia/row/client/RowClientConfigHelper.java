@@ -12,7 +12,7 @@ public class RowClientConfigHelper {
                 .attributes(rowClientConfig.getAttributes())
                 .connectionRepository(new ConnectionRepository.DefaultConnectionRepository<>())
                 .executorService(rowClientConfig.getExecutorService())
-                .generalCallback(new DefaultGeneralCallback<>())
+                .generalCallback(new DefaultGeneralCallback())
                 .handshakeHeadersProvider(rowClientConfig.getHandshakeHeadersProvider())
                 .rowTransportListener(rowClientConfig.getRowTransportListener())
                 .messageIdGenerator(rowClientConfig.getMessageIdGenerator())

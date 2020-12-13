@@ -50,7 +50,7 @@ public class SpringRowWebsocketClient implements RowClient {
     @Override
     public void open() {
         URI uri = URI.create(rowClientConfig.getAddress());
-        RowMessageHandler<SpringRowWebsocketSession> rowMessageHandler = new RowMessageHandler<SpringRowWebsocketSession>(PipelineFactory.getPipeline(this.rowClientConfig), rowClientConfig.getConnectionRepository(), rowClientConfig.getRowTransportListener(), this);
+        RowMessageHandler<SpringRowWebsocketSession> rowMessageHandler = rowClientConfig.getRowMessageHandlerProvider().provide(this.rowClientConfig, this);
         this.springRowWebsocketSession = new SpringRowWebsocketSession(rowClientConfig.getAttributes(), uri, rowClientConfig.getWebsocketConfig());
         SpringRowWebsocketHandlerAdapter springRowWebsocketHandlerAdapter = new SpringRowWebsocketHandlerAdapter(this.springRowWebsocketSession,rowMessageHandler);
         Callable<Void> callableClient = getCallableClient(springRowWebsocketHandlerAdapter, uri, rowClientConfig.getHandshakeHeadersProvider().getHeaders());

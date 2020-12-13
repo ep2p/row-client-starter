@@ -10,6 +10,7 @@ import org.springframework.scheduling.support.PeriodicTrigger;
 
 import javax.websocket.CloseReason;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.concurrent.TimeUnit;
 
 public class HeartbeatTransportListenerDecorator<S extends WebsocketSession> extends TransportListenerDecorator<S> {
@@ -54,7 +55,7 @@ public class HeartbeatTransportListenerDecorator<S extends WebsocketSession> ext
                 public void run() {
                     try {
                         if(rowWebsocketSession.isOpen()){
-                            rowWebsocketSession.sendPingMessage(null);
+                            rowWebsocketSession.sendPingMessage(ByteBuffer.allocate(0));
                         }
                     } catch (Exception e) {
                         log.error("Failed to send ping packet", e);

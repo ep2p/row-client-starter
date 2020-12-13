@@ -1,8 +1,6 @@
 package lab.idioglossia.row.client;
 
 import lab.idioglossia.row.client.tyrus.RowClientConfig;
-import lab.idioglossia.row.client.tyrus.TyrusRowWebsocketClient;
-import lab.idioglossia.row.client.ws.RowWebsocketSession;
 import lab.idioglossia.row.client.ws.SpringRowWebsocketClient;
 import lab.idioglossia.row.client.ws.SpringRowWebsocketSession;
 import org.springframework.lang.Nullable;

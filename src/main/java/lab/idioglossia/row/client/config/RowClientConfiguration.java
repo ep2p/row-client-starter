@@ -138,8 +138,8 @@ public class RowClientConfiguration {
 
     @Bean
     @ConditionalOnMissingBean(GeneralCallback.class)
-    public GeneralCallback<?> generalCallback(){
-        return new DefaultGeneralCallback<>();
+    public GeneralCallback generalCallback(){
+        return new DefaultGeneralCallback();
     }
 
     @Bean("rowClientExecutorServiceHolder")

@@ -165,9 +165,15 @@ public class RowClientConfiguration {
         return new MapCallbackRegistry();
     }
 
+    @Bean("rowMessageHandlerProvider")
+    @ConditionalOnMissingBean(RowMessageHandlerProvider.class)
+    public RowMessageHandlerProvider rowMessageHandlerProvider(){
+        return new RowMessageHandlerProvider.Default();
+    }
+
     @Bean({"rowClientConfig", "defaultRowClientConfig"})
     @ConditionalOnMissingBean(RowClientConfig.class)
-    @DependsOn({"websocketConfig", "subscriptionListenerRegistry", "messageIdGenerator", "rowTransportListener", "handshakeHeadersProvider", "generalCallback", "rowClientExecutorServiceHolder", "rowConnectionRepository", "rowCallbackRegistry", "messageConverter"})
+    @DependsOn({"websocketConfig", "subscriptionListenerRegistry", "messageIdGenerator", "rowTransportListener", "handshakeHeadersProvider", "generalCallback", "rowClientExecutorServiceHolder", "rowConnectionRepository", "rowCallbackRegistry", "messageConverter", "rowMessageHandlerProvider"})
     public RowClientConfig rowClientConfig(
             WebsocketConfig websocketConfig,
             SubscriptionListenerRegistry subscriptionListenerRegistry,
@@ -178,7 +184,8 @@ public class RowClientConfiguration {
             RowClientExecutorServiceHolder rowClientExecutorServiceHolder,
             ConnectionRepository<WebsocketSession> rowConnectionRepository,
             CallbackRegistry rowCallbackRegistry,
-            MessageConverter messageConverter
+            MessageConverter messageConverter,
+            RowMessageHandlerProvider rowMessageHandlerProvider
     ){
         return RowClientConfig.builder()
                 .websocketConfig(websocketConfig)
@@ -191,6 +198,7 @@ public class RowClientConfiguration {
                 .connectionRepository(rowConnectionRepository)
                 .callbackRegistry(rowCallbackRegistry)
                 .messageConverter(messageConverter)
+                .rowMessageHandlerProvider(rowMessageHandlerProvider)
                 .build();
     }
 
@@ -215,13 +223,14 @@ public class RowClientConfiguration {
         }
     }
 
-    //post construct is called (open()) cause this bean is created by spring
     @ConditionalOnProperty(prefix = "row.client", name = "address")
     @ConditionalOnMissingBean(RowClient.class)
     @Bean("rowClient")
     @DependsOn({"rowClientFactory"})
     public RowClient rowClient(RowClientFactory rowClientFactory){
-        return rowClientFactory.getRowClient(rowClientProperties.getAddress());
+        RowClient rowClient = rowClientFactory.getRowClient(rowClientProperties.getAddress());
+        rowClient.open();
+        return rowClient;
     }
 
 }

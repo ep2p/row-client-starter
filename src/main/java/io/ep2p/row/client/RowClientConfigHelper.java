@@ -1,8 +1,6 @@
-package lab.idioglossia.row.client;
+package io.ep2p.row.client;
 
-import lab.idioglossia.row.client.tyrus.ConnectionRepository;
-import lab.idioglossia.row.client.tyrus.RowClientConfig;
-import lab.idioglossia.row.client.ws.RowWebsocketSession;
+import io.ep2p.row.client.ws.RowWebsocketSession;
 
 public class RowClientConfigHelper {
     public static RowClientConfig<RowWebsocketSession> clone(RowClientConfig<RowWebsocketSession> rowClientConfig){

@@ -1,8 +1,7 @@
-package lab.idioglossia.row.client;
+package io.ep2p.row.client;
 
-import lab.idioglossia.row.client.callback.RowTransportListener;
-import lab.idioglossia.row.client.ws.RowWebsocketSession;
-import lab.idioglossia.row.client.ws.WebsocketSession;
+import io.ep2p.row.client.callback.RowTransportListener;
+import io.ep2p.row.client.ws.WebsocketSession;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.retry.RetryCallback;

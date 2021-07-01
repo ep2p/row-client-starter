@@ -1,6 +1,9 @@
-package lab.idioglossia.row.client.ws;
+package io.ep2p.row.client.ws;
 
-import org.springframework.web.socket.*;
+import org.springframework.web.socket.CloseStatus;
+import org.springframework.web.socket.PongMessage;
+import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import javax.websocket.CloseReason;

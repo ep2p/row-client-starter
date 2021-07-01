@@ -1,10 +1,6 @@
-package lab.idioglossia.row.client;
+package io.ep2p.row.client;
 
-import lab.idioglossia.row.client.tyrus.RowClientConfig;
-import lab.idioglossia.row.client.tyrus.TyrusRowWebsocketClient;
-import lab.idioglossia.row.client.ws.WebsocketSession;
-import org.springframework.lang.Nullable;
-import org.springframework.util.Assert;
+import io.ep2p.row.client.ws.WebsocketSession;
 
 public interface RowClientFactory<S extends WebsocketSession> {
     RowClient getRowClient(String address);

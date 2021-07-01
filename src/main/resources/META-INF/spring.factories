@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  lab.idioglossia.row.client.config.RowClientConfiguration
+  io.ep2p.row.client.config.RowClientConfiguration

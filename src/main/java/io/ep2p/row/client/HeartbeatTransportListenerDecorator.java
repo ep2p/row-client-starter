@@ -1,15 +1,13 @@
-package lab.idioglossia.row.client;
+package io.ep2p.row.client;
 
-import lab.idioglossia.row.client.callback.RowTransportListener;
-import lab.idioglossia.row.client.ws.RowWebsocketSession;
-import lab.idioglossia.row.client.ws.WebsocketSession;
+import io.ep2p.row.client.callback.RowTransportListener;
+import io.ep2p.row.client.ws.WebsocketSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.Trigger;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.scheduling.support.PeriodicTrigger;
 
 import javax.websocket.CloseReason;
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.concurrent.TimeUnit;
 

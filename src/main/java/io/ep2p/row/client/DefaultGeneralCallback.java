@@ -1,6 +1,6 @@
-package lab.idioglossia.row.client;
+package io.ep2p.row.client;
 
-import lab.idioglossia.row.client.callback.GeneralCallback;
+import io.ep2p.row.client.callback.GeneralCallback;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

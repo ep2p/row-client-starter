@@ -1,13 +1,12 @@
-package lab.idioglossia.row.client.ws;
+package io.ep2p.row.client.ws;
 
-import lab.idioglossia.row.client.RowClient;
-import lab.idioglossia.row.client.callback.ResponseCallback;
-import lab.idioglossia.row.client.callback.SubscriptionListener;
-import lab.idioglossia.row.client.model.RowRequest;
-import lab.idioglossia.row.client.tyrus.RequestSender;
-import lab.idioglossia.row.client.tyrus.RowClientConfig;
-import lab.idioglossia.row.client.tyrus.RowMessageHandler;
-import lab.idioglossia.row.client.ws.handler.PipelineFactory;
+import io.ep2p.row.client.RequestSender;
+import io.ep2p.row.client.RowClient;
+import io.ep2p.row.client.RowClientConfig;
+import io.ep2p.row.client.RowMessageHandler;
+import io.ep2p.row.client.callback.ResponseCallback;
+import io.ep2p.row.client.callback.SubscriptionListener;
+import io.ep2p.row.client.model.RowRequest;
 import lombok.SneakyThrows;
 import org.glassfish.tyrus.client.ClientManager;
 import org.springframework.http.HttpHeaders;
@@ -23,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
-import static lab.idioglossia.row.client.model.protocol.Naming.ROW_PROTOCOL_NAME;
+import static io.ep2p.row.client.model.protocol.Naming.ROW_PROTOCOL_NAME;
 
 public class SpringRowWebsocketClient implements RowClient {
     private RequestSender requestSender;

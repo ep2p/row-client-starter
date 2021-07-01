@@ -1,10 +1,10 @@
-package lab.idioglossia.row.client;
+package io.ep2p.row.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lab.idioglossia.row.client.callback.ResponseCallback;
-import lab.idioglossia.row.client.model.RowRequest;
-import lab.idioglossia.row.client.model.RowResponse;
-import lab.idioglossia.row.client.model.protocol.RowResponseStatus;
+import io.ep2p.row.client.callback.ResponseCallback;
+import io.ep2p.row.client.model.RowRequest;
+import io.ep2p.row.client.model.RowResponse;
+import io.ep2p.row.client.model.protocol.RowResponseStatus;
 import lombok.SneakyThrows;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;

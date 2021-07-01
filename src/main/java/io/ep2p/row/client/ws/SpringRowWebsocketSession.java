@@ -1,4 +1,4 @@
-package lab.idioglossia.row.client.ws;
+package io.ep2p.row.client.ws;
 
 import org.springframework.web.socket.*;
 

@@ -1,4 +1,4 @@
-package lab.idioglossia.row.client;
+package io.ep2p.row.client;
 
 import org.glassfish.tyrus.client.SslEngineConfigurator;
 

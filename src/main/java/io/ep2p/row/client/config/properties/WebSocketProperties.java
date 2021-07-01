@@ -1,4 +1,4 @@
-package lab.idioglossia.row.client.config.properties;
+package io.ep2p.row.client.config.properties;
 
 import lombok.Getter;
 import lombok.Setter;
